@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Adopt a dog</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="importmap-type" content="systemjs-importmap">
+    <script src="/store.js"></script>
+    <script type="systemjs-importmap">
+      {
+        "imports": {
+          "header": "http://localhost:3010/app.js",
+          "footer": "http://localhost:3020/app.js",
+          "buy-tools": "http://localhost:3030/static/js/bundle.js",
+          "single-spa": "https://cdn.jsdelivr.net/npm/single-spa@4.3.7/lib/system/single-spa.min.js"
+        }
+      }
+    </script>
+    <link rel="preload" href="https://cdn.jsdelivr.net/npm/single-spa@4.3.7/lib/system/single-spa.min.js" as="script" crossorigin="anonymous" />
+    <script src="https://cdn.jsdelivr.net/npm/single-spa-html"></script>
+    <script src="https://cdn.jsdelivr.net/npm/import-map-overrides@1.8.0/dist/import-map-overrides.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/systemjs/5.0.0/system.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/systemjs/5.0.0/extras/amd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/systemjs/5.0.0/extras/named-exports.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/systemjs/5.0.0/extras/named-register.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/systemjs/5.0.0/extras/use-default.min.js"></script>
+    <script src="http://localhost:8000/components/product-image.js"></script>
+    <script src="http://localhost:8000/components/product-description.js"></script>
+    <style>
+    body {
+      margin: 0px;
+      padding: 0px;
+      font-family: Arial, Helvetica, sans-serif;
+    }
+
+    .top {
+      display: grid;
+      grid-template-columns: 70% 30%;
+      column-gap: 1em;
+    }
+    .content {
+      padding: 1em;
+    }
+    </style>
+  </head>
+  <body>
+    <script>
+      System.import('single-spa').then(function (singleSpa) {
+        singleSpa.registerApplication(
+          'header',
+          () => System.import('header'),
+          location => location.pathname.startsWith('/')
+        );
+        singleSpa.registerApplication(
+          'footer',
+          () => System.import('footer'),
+          location => location.pathname.startsWith('/')
+        );
+        singleSpa.registerApplication(
+          'buy-tools',
+          () => System.import('buy-tools'),
+          location => location.pathname.startsWith('/')
+        );
+        singleSpa.start();
+      })
+    </script>
+
+    <div id="single-spa-application:header">
+    </div>
+
+    <div class="content">
+      <div class="top">
+        <div id="single-spa-application:product-image">
+        </div>
+        <div id="single-spa-application:buy-tools">
+        </div>        
+      </div>
+      <div id="single-spa-application:product-description">
+      </div>
+    </div>
+
+    <div id="single-spa-application:footer">
+    </div>
+
+    <!-- See https://github.com/joeldenning/import-map-overrides#user-interface  -->
+    <import-map-overrides-full show-when-local-storage="overrides-ui"></import-map-overrides-full>
+  </body>
+</html>
